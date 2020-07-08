@@ -1610,6 +1610,8 @@ contains
 
                !now the constraint is no longer needed, Jinyun Tang
                ceair = min( eair(p),  esat_tv(p) )
+               ceair = esat_tv(p)       !WW added, turn of rh effect on psn 
+
                if (      stomatalcond_mtd == stomatalcond_mtd_bb1987 )then
                   rh_can = ceair / esat_tv(p)
                else if ( stomatalcond_mtd == stomatalcond_mtd_medlyn2011 )then
