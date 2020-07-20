@@ -852,19 +852,24 @@ contains
                ! the summer solstice without reaching the threshold value.
                ! In that case, it will take until the next winter solstice
                ! before the growing degree-day summation starts again.
-
-               if (onset_gddflag(p) == 1._r8 .and. ws_flag == 0._r8) then
-                  onset_gddflag(p) = 0._r8
-                  onset_gdd(p) = 0._r8
-               end if
+!WW turned off to onset can occur after summer solstice
+!               if (onset_gddflag(p) == 1._r8 .and. ws_flag == 0._r8) then
+!                  onset_gddflag(p) = 0._r8
+!                  onset_gdd(p) = 0._r8
+!               end if
 
                ! if the gdd flag is set, and if the soil is above freezing
                ! then accumulate growing degree days for onset trigger
 
                soilt = t_soisno(c, phenology_soil_layer)
-               if (onset_gddflag(p) == 1.0_r8 .and. soilt > SHR_CONST_TKFRZ) then
-                  onset_gdd(p) = onset_gdd(p) + (soilt-SHR_CONST_TKFRZ)*fracday
+               if (onset_gddflag(p) == 1.0_r8 .and. soilt > 277._r8) then !WW added
+!              if (onset_gddflag(p) == 1.0_r8 .and. soilt > SHR_CONST_TKFRZ + 1._r8) then !WW added
+                  onset_gdd(p) = onset_gdd(p) + (soilt-SHR_CONST_TKFRZ )*fracday  
                end if
+
+!               if (onset_gddflag(p) == 1.0_r8 .and. soilt > SHR_CONST_TKFRZ) then
+!                  onset_gdd(p) = onset_gdd(p) + (soilt-SHR_CONST_TKFRZ)*fracday
+!               end if
 
                ! set onset_flag if critical growing degree-day sum is exceeded
                if (onset_gdd(p) > crit_onset_gdd) then
@@ -914,6 +919,7 @@ contains
                end if
 
                ! only begin to test for offset daylength once past the summer sol
+	       ! WW critical day length = 10.9 hours on parameter file
                if (ws_flag == 0._r8 .and. dayl(g) < crit_dayl) then
                   offset_flag(p) = 1._r8
                   offset_counter(p) = ndays_off * secspday
