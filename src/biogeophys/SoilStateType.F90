@@ -231,12 +231,13 @@ contains
             ptr_col=this%bsw_col, default='inactive')
     end if
 
-    if (use_dynroot) then
+! WW turned off to make ROOTFR = active
+!    if (use_dynroot) then
        this%rootfr_patch(begp:endp,:) = spval
        call hist_addfld2d (fname='ROOTFR', units='proportion', type2d='levgrnd', &
             avgflag='A', long_name='fraction of roots in each soil layer', &
             ptr_patch=this%rootfr_patch, default='active')
-    end if
+!    end if
 
     if ( use_dynroot ) then
        this%root_depth_patch(begp:endp) = spval
@@ -249,7 +250,7 @@ contains
        this%rootr_patch(begp:endp,:) = spval
        call hist_addfld2d (fname='ROOTR', units='proportion', type2d='levgrnd', &
             avgflag='A', long_name='effective fraction of roots in each soil layer (SMS method)', &
-            ptr_patch=this%rootr_patch, l2g_scale_type='veg', default='inactive')
+            ptr_patch=this%rootr_patch, l2g_scale_type='veg', default='active') ! WW made active
     end if
 
     if (use_cn .and. .not.(use_hydrstress)) then
